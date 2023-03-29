@@ -6,10 +6,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // if the request method is not post
-    if (req.method !== "POST") return res.status(400).json({ error: "Only post requests are allowed." })
+    if (req.method !== "PUT") return res.status(400).json({ error: "Only put requests are allowed." })
 
     // database connection handler
     await database_connection()
+
+    const { id } = req.query
 
     try {
         const user_id = VerifyToken(req.headers?.["auth-token"] as string)
@@ -18,17 +20,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const user = await User.findById(user_id)
         if (user.user_type !== "admin") return res.status(403).json({ error: "Access denied." })
 
-        // throwing an error if the product already exists
-        let product = await Product.findOne({ name: req.body.name })
-        if (product) return res.status(401).json({ error: "Product with the same title already exists." })
+        await Product.findByIdAndUpdate(id, {
+            $set: req.body
+        })
 
-        product = await Product.create(req.body)
-        await product.save()
-
-        res.status(201).json({ success: `${product.name} has been added as product.` })
+        res.status(200).json({ success: "Product updated successfully." })
     } catch (error) {
         return res.status(500).json(error)
     }
 }
 
-export default handler;
+export default handler
