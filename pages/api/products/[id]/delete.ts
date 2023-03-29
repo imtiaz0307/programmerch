@@ -5,8 +5,8 @@ import { VerifyToken } from "@/utils/VerifyToken";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    // if the request method is not put
-    if (req.method !== "PUT") return res.status(400).json({ error: "Only put requests are allowed." })
+    // if the request method is not delete
+    if (req.method !== "DELETE") return res.status(400).json({ error: "Only delete requests are allowed." })
 
     // database connection handler
     await database_connection()
@@ -20,12 +20,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const user = await User.findById(user_id)
         if (user.user_type !== "admin") return res.status(403).json({ error: "Access denied." })
 
-        const product = await Product.findByIdAndUpdate(id, {
-            $set: req.body
-        })
+        const product = await Product.findByIdAndDelete(id)
         if (!product) return res.status(404).json({ error: "No product found." })
 
-        res.status(200).json({ success: "Product updated successfully." })
+        res.status(200).json({ success: "Product deleted successfully." })
     } catch (error) {
         return res.status(500).json(error)
     }
