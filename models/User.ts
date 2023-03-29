@@ -28,6 +28,10 @@ const userSchema = new Schema(
             required: true,
             unique: true
         },
+        user_type: {
+            type: String,
+            default: "user"
+        },
         cart: {
             type: Array,
             default: []
