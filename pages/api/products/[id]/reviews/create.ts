@@ -41,11 +41,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         })
 
         // checking whether the review exists with the same username on same product
-        let review = await Review.findOne({ username: user.firstname, product_id: product._id })
+        let review = await Review.findOne({ user_id: user._id, product_id: product._id })
         if (review) return res.status(401).json({ error: "You have already reviewed the product." })
 
         // creating review
         review = await Review.create({
+            user_id: user._id,
             username: user.firstname,
             product_id: product._id,
             comment,

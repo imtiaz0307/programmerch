@@ -2,6 +2,10 @@ import { Schema, models, model } from "mongoose"
 
 const reviewSchema = new Schema(
     {
+        user_id: {
+            type: Schema.Types.ObjectId,
+            ref: "user"
+        },
         username: {
             type: String,
             required: true
