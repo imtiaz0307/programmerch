@@ -38,7 +38,9 @@ const Navbar = () => {
                         <Link href={"/wishlist"}>
                             <AiOutlineHeart />
                         </Link>
-                        <Link href={"/cart"}>
+                        <Link href={"/cart"} className='relative'>
+                            {/* cart items count */}
+                            <span className='absolute top-[-50%] right-[-50%] text-sm bg-black text-white px-1 rounded-[50%]'>0</span>
                             <BsCartDash />
                         </Link>
                         <Link href={"/profile/:id"}>
