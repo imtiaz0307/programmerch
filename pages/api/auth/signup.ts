@@ -18,6 +18,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         let user = await User.findOne({ email })
         if (user) return res.status(403).json({ error: "Email belongs to another account." })
 
+        user = await User.findOne({ contact_number })
+        if (user) return res.status(403).json({ error: "Number belongs to another account." })
+
         const salt = await genSalt(10)
         password = await hash(password, salt)
 

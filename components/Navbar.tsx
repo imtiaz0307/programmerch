@@ -1,12 +1,25 @@
+"use client"
+
 import Link from 'next/link'
-import React from 'react'
 import { AiOutlineHeart } from "react-icons/ai"
 import { BsCartDash } from "react-icons/bs"
 import { CgProfile } from "react-icons/cg"
+import ButtonFilled from './ButtonFilled'
+import { useState, useEffect } from "react"
 
 const Navbar = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState<Boolean>(false)
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            localStorage.getItem("auth-token") && setIsLoggedIn(true)
+        }
+    }, [isLoggedIn])
+
+
+
     return (
-        <header className=''>
+        <header>
             <nav className='max-w-max mx-auto'>
                 {/* nav top */}
                 <div className='flex justify-between w-full relative flex-wrap items-center'>
@@ -34,19 +47,27 @@ const Navbar = () => {
                         </ul>
                     </div>
                     {/* icons */}
-                    <div className='flex gap-4 items-center py-6 mr-2 text-xl md:order-2 md:text-2xl md:gap-8'>
-                        <Link href={"/wishlist"}>
-                            <AiOutlineHeart />
-                        </Link>
-                        <Link href={"/cart"} className='relative'>
-                            {/* cart items count */}
-                            <span className='absolute top-[-50%] right-[-50%] text-sm bg-black text-white px-1 rounded-[50%]'>0</span>
-                            <BsCartDash />
-                        </Link>
-                        <Link href={"/profile/:id"}>
-                            <CgProfile />
-                        </Link>
-                    </div>
+                    {
+                        isLoggedIn
+                            ?
+                            <div className='flex gap-4 items-center py-6 mr-2 text-xl md:order-2 md:text-2xl md:gap-8'>
+                                <Link href={"/wishlist"}>
+                                    <AiOutlineHeart />
+                                </Link>
+                                <Link href={"/cart"} className='relative'>
+                                    {/* cart items count */}
+                                    <span className='absolute top-[-50%] right-[-50%] text-sm bg-black text-white px-1 rounded-[50%]'>0</span>
+                                    <BsCartDash />
+                                </Link>
+                                <Link href={"/profile/:id"}>
+                                    <CgProfile />
+                                </Link>
+                            </div>
+                            :
+                            <div className='order-2 py-6 pr-2'>
+                                <ButtonFilled value={"Login"} url={""} />
+                            </div>
+                    }
                 </div>
                 {/* search bar */}
                 <form className='flex justify-center py-4'>

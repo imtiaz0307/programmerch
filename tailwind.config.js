@@ -19,6 +19,9 @@ module.exports = {
       },
       maxWidth: {
         "max": "1200px"
+      },
+      boxShadow: {
+        "my-shadow": "0 0 10px 10px #eee"
       }
     },
   },
